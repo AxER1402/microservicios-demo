@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Microservicios Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Microservicios Demo UI</h1>
+
+  <!-- Crear Usuario -->
+  <div class="section">
+    <h2>Crear Usuario</h2>
+    <input type="text" id="userName" placeholder="Nombre">
+    <input type="email" id="userEmail" placeholder="Email">
+    <button onclick="createUser()">Crear Usuario</button>
+    <pre id="userResult"></pre>
+  </div>
+
+  <!-- Crear Orden -->
+  <div class="section">
+    <h2>Crear Orden</h2>
+    <input type="number" id="orderUserId" placeholder="ID Usuario">
+    <input type="text" id="orderProduct" placeholder="Producto">
+    <input type="number" id="orderAmount" placeholder="Monto">
+    <button onclick="createOrder()">Crear Orden</button>
+    <pre id="orderResult"></pre>
+  </div>
+
+  <!-- Ver Notificaciones -->
+  <div class="section">
+    <h2>Notificaciones</h2>
+    <button onclick="getNotifications()">Ver Notificaciones</button>
+    <pre id="notificationsResult"></pre>
+  </div>
+
+  <script>
+    async function createUser() {
+      const name = document.getElementById('userName').value;
+      const email = document.getElementById('userEmail').value;
+      try {
+        const res = await fetch('http://localhost:3001/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email })
+        });
+        const data = await res.json();
+        document.getElementById('userResult').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('userResult').textContent = err;
+      }
+    }
+
+    async function createOrder() {
+      const user_id = parseInt(document.getElementById('orderUserId').value);
+      const product = document.getElementById('orderProduct').value;
+      const amount = parseFloat(document.getElementById('orderAmount').value);
+      try {
+        const res = await fetch('http://localhost:3002/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id, product, amount })
+        });
+        const data = await res.json();
+        document.getElementById('orderResult').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('orderResult').textContent = err;
+      }
+    }
+
+    async function getNotifications() {
+      try {
+        const res = await fetch('http://localhost:3003/notifications');
+        const data = await res.json();
+        document.getElementById('notificationsResult').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('notificationsResult').textContent = err;
+      }
+    }
+  </script>
+
+</body>
+</html>
