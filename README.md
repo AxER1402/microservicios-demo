@@ -62,8 +62,7 @@ Este proyecto es un sistema de microservicios que permite gestionar usuarios, ó
 
 ## Repositorio
 
-[GitHub - microservicios-demo](https://github.com/tu_usuario/microservicios-demo)  
-> Reemplaza `tu_usuario` con tu usuario real de GitHub.
+https://github.com/AxER1402/microservicios-demo.git
 
 ---
 
